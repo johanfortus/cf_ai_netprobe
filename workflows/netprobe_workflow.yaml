@@ -1,0 +1,4 @@
+# cloudflare workflows placeholder
+name: netprobe_workflow
+version: 1
+steps: []
