@@ -23,6 +23,18 @@ export class NetprobeHistory {
 	}
 
 	async fetch(request: Request): Promise<Response> {
+		const url = new URL(request.url);
+
+		if (url.pathname === "/internal/ingest" && request.method === "POST") {
+			const data = await request.json();
+
+			const history = (await this.state.storage.get("history")) || [];
+			history.push({ ...data, timestamp: Date.now() });
+
+			await this.state.storage.put("history", history);
+			return new Response("stored");
+		}
+
 		return new Response("WIP", { status: 501 });
 	}
 }
