@@ -11,6 +11,22 @@
  * Learn more at https://developers.cloudflare.com/workers/
  */
 
+export interface Env {
+	NETPROBE_HISTORY: DurableObjectNamespace;
+}
+
+export class NetprobeHistory {
+	state: DurableObjectState;
+
+	constructor(state: DurableObjectState, env: Env) {
+		this.state = state;
+	}
+
+	async fetch(request: Request): Promise<Response> {
+		return new Response("WIP", { status: 501 });
+	}
+}
+
 export default {
 
 	async fetch(request, env, ctx): Promise<Response> {
