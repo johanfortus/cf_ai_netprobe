@@ -12,20 +12,23 @@
  */
 
 export default {
+
 	async fetch(request, env, ctx): Promise<Response> {
 		const url = new URL(request.url);
-		switch (url.pathname) {
-			case '/message':
-				return new Response('Hello, World!');
-			case '/random':
-				return new Response(crypto.randomUUID());
-			case '/status':
-				return new Response(
-					JSON.stringify({ ok: true, time: Date.now() }),
-					{ headers: { "Content-Type": "application/json" } }
-				);
-			default:
-				return new Response('Not Found', { status: 404 });
+
+		if (url.pathname === '/message') {
+			return new Response('Hello, World!');
 		}
+		if (url.pathname === '/random') {
+			return new Response(crypto.randomUUID());
+		}
+		if (url.pathname === '/status') {
+			return new Response(
+				JSON.stringify({ ok: true, time: Date.now() }),
+				{ headers: { "Content-Type": "application/json" } }
+			);
+		}
+		
+		return new Response('Not Found', { status: 404 });
 	},
 } satisfies ExportedHandler<Env>;
