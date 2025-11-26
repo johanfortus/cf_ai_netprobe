@@ -35,7 +35,15 @@ export class NetprobeHistory {
 			return new Response("stored");
 		}
 
-		return new Response("WIP", { status: 501 });
+		if (url.pathname === "/internal/history" && request.method === "GET") {
+			const history = (await this.state.storage.get("history")) || [];
+
+			return new Response(JSON.stringify(history), {
+				headers: { "Content-Type": "application/json" }
+			})
+		}
+
+		return new Response("Not Found", { status: 501 });
 	}
 }
 
