@@ -22,9 +22,32 @@ export default {
 		if (url.pathname === '/random') {
 			return new Response(crypto.randomUUID());
 		}
+
+		// health check
 		if (url.pathname === '/status') {
 			return new Response(
 				JSON.stringify({ ok: true, time: Date.now() }),
+				{ headers: { "Content-Type": "application/json" } }
+			);
+		}
+
+		// Pi sends network measurements here
+		if (url.pathname === '/ingest' && request.method === 'POST') {
+			const data = await request.json();
+			console.log("Measurement from Pi: ", data);
+			return new Response("OK");
+		}
+
+		// UI reads history
+		if (url.pathname === '/history') {
+
+			const mock = [
+				{ latency: 42, jitter: 3, timestamp: Date.now() },
+				{ latency: 51, jitter: 5, timestamp: Date.now() - 5000 }
+			];
+
+			return new Response(
+				JSON.stringify(mock),
 				{ headers: { "Content-Type": "application/json" } }
 			);
 		}
