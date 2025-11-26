@@ -19,6 +19,11 @@ export default {
 				return new Response('Hello, World!');
 			case '/random':
 				return new Response(crypto.randomUUID());
+			case '/status':
+				return new Response(
+					JSON.stringify({ ok: true, time: Date.now() }),
+					{ headers: { "Content-Type": "application/json" } }
+				);
 			default:
 				return new Response('Not Found', { status: 404 });
 		}
