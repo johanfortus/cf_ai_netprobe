@@ -69,23 +69,23 @@ export default {
 
 		// Pi sends network measurements here
 		if (url.pathname === '/ingest' && request.method === 'POST') {
-			const data = await request.json();
-			console.log("Measurement from Pi: ", data);
-			return new Response("OK");
+			const body = await request.json();
+			
+			const id = env.NETPROBE_HISTORY.idFromName("global");
+			const stub = env.NETPROBE_HISTORY.get(id);
+
+			return await stub.fetch("https://dummy/internal/ingest", {
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify(body),
+			});
 		}
 
 		// UI reads history
 		if (url.pathname === '/history') {
-
-			const mock = [
-				{ latency: 42, jitter: 3, timestamp: Date.now() },
-				{ latency: 51, jitter: 5, timestamp: Date.now() - 5000 }
-			];
-
-			return new Response(
-				JSON.stringify(mock),
-				{ headers: { "Content-Type": "application/json" } }
-			);
+			const id = env.NETPROBE_HISTORY.idFromName("global");
+			const stub = env.NETPROBE_HISTORY.get(id);
+			return await stub.fetch("https://dummy/internal/history");
 		}
 		
 		return new Response('Not Found', { status: 404 });
