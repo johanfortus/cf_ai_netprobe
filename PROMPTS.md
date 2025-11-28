@@ -8,6 +8,8 @@ This file documents all AI-assisted interactions used during the development of 
 
 **Prompt:**
 
+<img width="900" src="assets/ArchitectureDrawing.jpg" />
+
 Create a Figma diagram of my project architecture based on the visual style in the image I attached. Include the following components:
 
 A Raspberry Pi device (Client Probe)
@@ -31,3 +33,4 @@ Frontend Web Page
 **Result:**
 
 <img width="900" src="assets/Architecture.jpg" />
+
