@@ -3,6 +3,7 @@ import requests
 import re
 
 TARGET_HOST = "8.8.8.8"
+WORKER_INGEST_URL = "http://localhost:8787/ingest"
 
 
 def run_ping(count=5):
@@ -44,9 +45,24 @@ def parse_ping(output: str):
     }
 
 
+def send_measurement(measurement: dict):
+    resp = requests.post(
+        WORKER_INGEST_URL,
+        json=measurement,
+        timeout=5
+    )
+    print("Ingest response:", resp.status_code, resp.text)
+
+
 def main():
     output = run_ping()
-    print(output)
+    measurement = parse_ping(output)
+    print("Measurement:", measurement)
+
+    if measurement["latency"] is not None:
+        send_measurement(measurement)
+    else:
+        print("No valid latency parsed, skip send.")
 
 
 if __name__ == "__main__":
