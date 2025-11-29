@@ -26,11 +26,18 @@ This starts the Worker locally at:
 http://localhost:8787
 ```
 
-## System Architecture
-1. **Raspberry Pi Probe** - Collects network metrics.
-2. **Cloudflare Worker** - Handles ingestion and triggers other services.
-3. **Durable Object (NetProbe History)** - Stores historical measurements for trend analysis.
-4. **Workers AI** - Generates summaries.
-5. **Cloudflare Pages Dashboard** - Displays history and insights in the browser.
+## Architecture Overview
+
+- **Raspberry Pi Probe**  
+  Runs a Python script that measures network health (latency, jitter, packet loss) and sends JSON to the Cloudflare Worker.
+
+- **Cloudflare Worker**  
+  Exposes:
+  - `POST /ingest` – accepts measurements from the Pi
+  - `GET /history` – returns stored measurements for the dashboard
+
+- **Durable Object: NetprobeHistory**  
+  Stores all received measurements in persistent storage so they can be queried later.
 
 <img width="900" src="assets/Architecture.jpg" />
+
