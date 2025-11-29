@@ -34,3 +34,13 @@ Frontend Web Page
 
 <img width="900" src="assets/Architecture.jpg" />
 
+## Prompt - Parse Ping Function
+
+**Prompt:**
+
+Write a simple parse_ping(output) function that:
+- uses regex to collect all time=XX.X ms values
+- computes average latency
+- computes jitter
+- parses packet loss from the summary line (X% packet loss)
+- returns a dict with latency, jitter, and packet_loss
