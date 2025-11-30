@@ -1,6 +1,7 @@
 import subprocess
 import requests
 import re
+from time import sleep
 
 TARGET_HOST = "8.8.8.8"
 WORKER_INGEST_URL = "http://localhost:8787/ingest"
@@ -55,14 +56,17 @@ def send_measurement(measurement: dict):
 
 
 def main():
-    output = run_ping()
-    measurement = parse_ping(output)
-    print("Measurement:", measurement)
+    while True:
+        output = run_ping()
+        measurement = parse_ping(output)
+        print("Measurement:", measurement)
 
-    if measurement["latency"] is not None:
-        send_measurement(measurement)
-    else:
-        print("No valid latency parsed, skip send.")
+        if measurement["latency"] is not None:
+            send_measurement(measurement)
+        else:
+            print("No valid latency parsed, skip send.")
+
+        sleep(30)
 
 
 if __name__ == "__main__":
